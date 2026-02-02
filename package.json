@@ -1,12 +1,12 @@
 {
-  "name": "@wilsonbeam/adb-mcp",
+  "name": "@wilsonbeam/openclaw-adb-mcp",
   "version": "1.0.0",
   "description": "ADB MCP Server - Give AI agents control of real Android phones",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
   "bin": {
-    "adb-mcp": "./dist/index.js"
+    "openclaw-adb-mcp": "./dist/index.js"
   },
   "scripts": {
     "build": "tsc",
@@ -14,17 +14,23 @@
     "dev": "tsc && node dist/index.js",
     "test": "tsc && node dist/test.js"
   },
-  "keywords": ["mcp", "adb", "android", "ai", "automation"],
+  "keywords": [
+    "mcp",
+    "adb",
+    "android",
+    "ai",
+    "automation"
+  ],
   "author": "Wilson Beam",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wilsonbeam/adb-mcp.git"
+    "url": "git+https://github.com/wilsonbeam/openclaw-adb-mcp.git"
   },
   "bugs": {
-    "url": "https://github.com/wilsonbeam/adb-mcp/issues"
+    "url": "https://github.com/wilsonbeam/openclaw-adb-mcp/issues"
   },
-  "homepage": "https://github.com/wilsonbeam/adb-mcp#readme",
+  "homepage": "https://github.com/wilsonbeam/openclaw-adb-mcp#readme",
   "engines": {
     "node": ">=18.0.0"
   },

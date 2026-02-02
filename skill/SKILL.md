@@ -40,16 +40,16 @@ mcp:
   servers:
     adb:
       command: npx
-      args: ["@wilsonbeam/adb-mcp"]
+      args: ["@wilsonbeam/openclaw-adb-mcp"]
 ```
 
-Or if installed globally (`npm install -g @wilsonbeam/adb-mcp`):
+Or if installed globally (`npm install -g @wilsonbeam/openclaw-adb-mcp`):
 
 ```yaml
 mcp:
   servers:
     adb:
-      command: adb-mcp
+      command: openclaw-adb-mcp
 ```
 
 ## Available Tools

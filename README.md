@@ -1,4 +1,4 @@
-# @wilsonbeam/adb-mcp
+# @wilsonbeam/openclaw-adb-mcp
 
 Give AI agents full control of real Android phones.
 
@@ -48,12 +48,12 @@ mcp:
   servers:
     adb:
       command: npx
-      args: ["@wilsonbeam/adb-mcp"]
+      args: ["@wilsonbeam/openclaw-adb-mcp"]
 ```
 
 Or install globally first:
 ```bash
-npm install -g @wilsonbeam/adb-mcp
+npm install -g @wilsonbeam/openclaw-adb-mcp
 ```
 
 Then:
@@ -61,7 +61,7 @@ Then:
 mcp:
   servers:
     adb:
-      command: adb-mcp
+      command: openclaw-adb-mcp
 ```
 
 ### 4. Install the Skill (Optional but Recommended)
@@ -157,7 +157,7 @@ All tools accept optional `deviceId`. If omitted with multiple devices connected
 ## Development
 
 ```bash
-git clone https://github.com/openclaw/openclaw-adb-mcp
+git clone https://github.com/wilsonbeam/openclaw-adb-mcp
 cd openclaw-adb-mcp
 npm install
 npm run build
