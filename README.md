@@ -1,131 +1,158 @@
 # @openclaw/adb-mcp
 
-Give AI agents full control of real Android phones via MCP (Model Context Protocol).
+Give AI agents full control of real Android phones.
 
-## Features
+**MCP Server** + **OpenClaw Skill** for Android device automation via ADB.
 
-**Core ADB**
-- List connected devices
-- Execute shell commands
-- Get device info (model, brand, Android version)
-- Install/uninstall apps
-- Push/pull files
-- Start activities, force stop, clear app data
+## What Can It Do?
 
-**Screen Control**
-- Tap, swipe, long press
-- Type text
-- Press keys (home, back, volume, etc.)
-- Take screenshots (returns base64 PNG)
-- Get screen dimensions
-- Wake/unlock device
+- 📱 **Screen Control** — tap, swipe, type text, take screenshots
+- 📞 **Phone Functions** — make calls, send SMS, check call state  
+- 📦 **App Management** — install, uninstall, list packages
+- 🔧 **Device Control** — shell commands, push/pull files, wake screen
 
-**Phone Functions**
-- Make phone calls (dials immediately)
-- Open dialer with number
-- End calls
-- Send SMS (opens composer)
-- Get call state
-- Answer incoming calls
+## Quick Start
 
-## Installation
+### 1. Install ADB
 
 ```bash
-npm install @openclaw/adb-mcp
+# macOS
+brew install android-platform-tools
+
+# Linux  
+sudo apt install adb
+
+# Windows
+# Download from developer.android.com/tools/releases/platform-tools
 ```
 
-## Prerequisites
+### 2. Connect Your Android Device
 
-1. **ADB installed**: `brew install android-platform-tools` (macOS) or [download SDK tools](https://developer.android.com/studio/releases/platform-tools)
-2. **USB debugging enabled** on your Android device
-3. **Device connected** and authorized
+1. Enable **Developer Options** on your phone
+2. Enable **USB Debugging**
+3. Connect via USB cable
+4. Accept the authorization prompt on your phone
 
-Verify with:
+Verify:
 ```bash
 adb devices
+# Should show: XXXXX device
 ```
 
-## Usage
+### 3. Add to OpenClaw
 
-### As MCP Server
+Add to your `~/.openclaw/config.yaml`:
 
-Add to your MCP client configuration:
-
-```json
-{
-  "mcpServers": {
-    "adb": {
-      "command": "npx",
-      "args": ["@openclaw/adb-mcp"]
-    }
-  }
-}
+```yaml
+mcp:
+  servers:
+    adb:
+      command: npx
+      args: ["@openclaw/adb-mcp"]
 ```
 
-Or if installed globally:
-
-```json
-{
-  "mcpServers": {
-    "adb": {
-      "command": "adb-mcp"
-    }
-  }
-}
+Or install globally first:
+```bash
+npm install -g @openclaw/adb-mcp
 ```
 
-### Available Tools
+Then:
+```yaml
+mcp:
+  servers:
+    adb:
+      command: adb-mcp
+```
 
+### 4. Install the Skill (Optional but Recommended)
+
+The skill teaches your AI agent how to use the ADB tools effectively.
+
+```bash
+# From clawhub.com (coming soon)
+openclaw skill install adb
+
+# Or manually copy the skill folder
+cp -r skill/ ~/.openclaw/skills/adb/
+```
+
+## Available Tools (26 total)
+
+### Core ADB
 | Tool | Description |
 |------|-------------|
-| `adb_list_devices` | List all connected Android devices |
-| `adb_shell` | Execute shell command on device |
-| `adb_device_info` | Get device model, brand, Android version |
+| `adb_list_devices` | List connected Android devices |
+| `adb_shell` | Execute shell command |
+| `adb_device_info` | Get model, brand, Android version |
 | `adb_install_app` | Install APK file |
-| `adb_uninstall_app` | Uninstall app by package name |
+| `adb_uninstall_app` | Uninstall app |
 | `adb_list_packages` | List installed packages |
 | `adb_push_file` | Push file to device |
 | `adb_pull_file` | Pull file from device |
-| `adb_start_activity` | Start an activity intent |
-| `adb_force_stop` | Force stop an app |
+| `adb_start_activity` | Start activity/intent |
+| `adb_force_stop` | Force stop app |
 | `adb_clear_data` | Clear app data |
-| `adb_tap` | Tap screen coordinates |
-| `adb_swipe` | Swipe between coordinates |
-| `adb_long_press` | Long press at coordinates |
-| `adb_type_text` | Type text into focused field |
+
+### Screen Control
+| Tool | Description |
+|------|-------------|
+| `adb_tap` | Tap at coordinates |
+| `adb_swipe` | Swipe gesture |
+| `adb_long_press` | Long press |
+| `adb_type_text` | Type into focused field |
 | `adb_press_key` | Press Android keycode |
-| `adb_screenshot` | Take screenshot (returns base64 PNG) |
+| `adb_screenshot` | Capture screen (returns base64 PNG) |
 | `adb_screen_size` | Get screen dimensions |
 | `adb_wake` | Wake device screen |
 | `adb_press_home` | Press home button |
 | `adb_press_back` | Press back button |
-| `adb_make_call` | Make phone call |
+
+### Phone Functions
+| Tool | Description |
+|------|-------------|
+| `adb_make_call` | Make phone call (dials immediately) |
 | `adb_dial_number` | Open dialer with number |
 | `adb_end_call` | End current call |
 | `adb_send_sms` | Open SMS composer |
-| `adb_call_state` | Get current call state |
+| `adb_call_state` | Get call state (idle/ringing/offhook) |
 | `adb_answer_call` | Answer incoming call |
 
-### Multiple Devices
-
-All tools accept an optional `deviceId` parameter. If omitted and multiple devices are connected, ADB will error. Get device IDs with `adb_list_devices`.
-
-## Example Interactions
-
-**"What Android devices are connected?"**
-→ Uses `adb_list_devices`
+## Example Conversations
 
 **"Take a screenshot of my phone"**
-→ Uses `adb_screenshot`, returns PNG image
+→ Agent uses `adb_screenshot`, returns the image
 
-**"Call +1-555-123-4567"**
-→ Uses `adb_make_call` with the phone number
+**"Call Mom at +1-555-123-4567"**
+→ Agent uses `adb_make_call`
 
-**"Open Settings app"**
-→ Uses `adb_start_activity` with `-n com.android.settings/.Settings`
+**"Open Chrome and search for weather"**
+→ Agent uses `adb_start_activity` to launch Chrome, `adb_tap` on search bar, `adb_type_text` to enter query
 
-**"Install the APK at /path/to/app.apk"**
-→ Uses `adb_install_app`
+**"Install the APK I just downloaded"**
+→ Agent uses `adb_install_app` with the APK path
+
+## Project Structure
+
+```
+openclaw-adb-mcp/
+├── src/
+│   ├── index.ts          # MCP server entry point
+│   └── adb/
+│       ├── executor.ts   # Low-level ADB execution
+│       ├── core.ts       # Device, app, file operations
+│       ├── screen.ts     # Tap, swipe, screenshot
+│       └── phone.ts      # Call, SMS functions
+├── skill/
+│   ├── SKILL.md          # OpenClaw skill definition
+│   └── scripts/
+│       └── check-setup.sh
+├── package.json
+└── tsconfig.json
+```
+
+## Multiple Devices
+
+All tools accept optional `deviceId`. If omitted with multiple devices connected, ADB errors. Use `adb_list_devices` to get device IDs.
 
 ## Development
 
@@ -136,6 +163,20 @@ npm install
 npm run build
 npm run dev  # Build and run
 ```
+
+## Troubleshooting
+
+**No devices found**
+- Check USB cable and connection
+- Enable USB debugging on device
+- Run `adb kill-server && adb start-server`
+
+**Device unauthorized**
+- Accept the RSA key prompt on your phone screen
+
+**Screenshot fails**
+- Wake the screen first with `adb_wake`
+- Some devices need screen unlock
 
 ## License
 
