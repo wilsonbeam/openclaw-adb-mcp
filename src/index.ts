@@ -12,6 +12,7 @@ import { z } from "zod";
 import * as core from "./adb/core.js";
 import * as screen from "./adb/screen.js";
 import * as phone from "./adb/phone.js";
+import * as unlock from "./adb/unlock.js";
 
 // Tool definitions
 const TOOLS = [
@@ -341,6 +342,48 @@ const TOOLS = [
       },
     },
   },
+
+  // === Unlock Tools ===
+  {
+    name: "adb_unlock",
+    description: "Unlock the device with password, PIN, pattern, or swipe. Pattern uses 3x3 grid numbered 0-8 (top-left to bottom-right), e.g., '0123' or '0147' for L-shape.",
+    inputSchema: {
+      type: "object" as const,
+      properties: {
+        type: {
+          type: "string",
+          enum: ["password", "pin", "pattern", "none"],
+          description: "Type of lock screen (none = swipe only)",
+        },
+        credential: {
+          type: "string",
+          description: "Password, PIN, or pattern (pattern as string of digits 0-8, e.g., '012345678' for Z-shape)",
+        },
+        deviceId: { type: "string", description: "Target device ID (optional)" },
+      },
+      required: ["type"],
+    },
+  },
+  {
+    name: "adb_is_locked",
+    description: "Check if the device screen is locked",
+    inputSchema: {
+      type: "object" as const,
+      properties: {
+        deviceId: { type: "string", description: "Target device ID (optional)" },
+      },
+    },
+  },
+  {
+    name: "adb_lock",
+    description: "Lock the device screen",
+    inputSchema: {
+      type: "object" as const,
+      properties: {
+        deviceId: { type: "string", description: "Target device ID (optional)" },
+      },
+    },
+  },
 ];
 
 // Create the MCP server
@@ -519,6 +562,23 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         break;
       case "adb_answer_call":
         result = await phone.answerCall({ deviceId: args?.deviceId as string });
+        break;
+
+      // Unlock tools
+      case "adb_unlock":
+        result = await unlock.unlock(
+          {
+            type: args?.type as "password" | "pin" | "pattern" | "none",
+            value: args?.credential as string,
+          },
+          { deviceId: args?.deviceId as string }
+        );
+        break;
+      case "adb_is_locked":
+        result = await unlock.isLocked({ deviceId: args?.deviceId as string });
+        break;
+      case "adb_lock":
+        result = await unlock.lock({ deviceId: args?.deviceId as string });
         break;
 
       default:
