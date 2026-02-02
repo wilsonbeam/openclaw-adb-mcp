@@ -117,6 +117,37 @@ cp -r skill/ ~/.openclaw/skills/adb/
 | `adb_call_state` | Get call state (idle/ringing/offhook) |
 | `adb_answer_call` | Answer incoming call |
 
+### Unlock
+| Tool | Description |
+|------|-------------|
+| `adb_unlock` | Unlock with password, PIN, pattern, or swipe |
+| `adb_is_locked` | Check if device is locked |
+| `adb_lock` | Lock the device screen |
+
+## Auto-Unlock
+
+The `adb_unlock` tool supports multiple lock types:
+
+```javascript
+// Password
+adb_unlock({ type: "password", credential: "mypassword" })
+
+// PIN
+adb_unlock({ type: "pin", credential: "1234" })
+
+// Pattern (3x3 grid, digits 0-8)
+// Grid layout:
+//   0 1 2
+//   3 4 5
+//   6 7 8
+adb_unlock({ type: "pattern", credential: "0123" })  // Top row
+adb_unlock({ type: "pattern", credential: "0147" })  // L-shape
+adb_unlock({ type: "pattern", credential: "02468" }) // X pattern
+
+// Swipe only (no security)
+adb_unlock({ type: "none" })
+```
+
 ## Example Conversations
 
 **"Take a screenshot of my phone"**

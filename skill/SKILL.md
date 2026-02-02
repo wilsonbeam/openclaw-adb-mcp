@@ -93,6 +93,21 @@ mcp:
 | `adb_call_state` | Check if idle/ringing/offhook |
 | `adb_answer_call` | Answer incoming call |
 
+### Unlock
+| Tool | Purpose |
+|------|---------|
+| `adb_unlock` | Unlock with password/PIN/pattern/swipe |
+| `adb_is_locked` | Check if device is locked |
+| `adb_lock` | Lock the screen |
+
+**Pattern format** (3x3 grid, digits 0-8):
+```
+0 1 2
+3 4 5  
+6 7 8
+```
+Example: L-shape = "0367", Z-shape = "012456"
+
 ## Common Keycodes
 
 ```
