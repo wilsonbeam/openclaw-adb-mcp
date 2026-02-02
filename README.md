@@ -1,4 +1,4 @@
-# @openclaw/adb-mcp
+# @wilsonbeam/adb-mcp
 
 Give AI agents full control of real Android phones.
 
@@ -48,12 +48,12 @@ mcp:
   servers:
     adb:
       command: npx
-      args: ["@openclaw/adb-mcp"]
+      args: ["@wilsonbeam/adb-mcp"]
 ```
 
 Or install globally first:
 ```bash
-npm install -g @openclaw/adb-mcp
+npm install -g @wilsonbeam/adb-mcp
 ```
 
 Then:
